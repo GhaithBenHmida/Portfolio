@@ -1,0 +1,92 @@
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;     
+}
+#container{
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column  ;
+  overflow: hidden;
+}
+.bg{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden  ;
+  z-index: -99; 
+}
+.bgimage{
+  width: 100%;
+}
+.suwi{
+  position: relative;
+  padding: 10px;
+  height: 100%;
+  width: 100%;
+  
+  display: grid;
+
+  /* Key parts */
+  grid-auto-flow: row;      /* fill vertically first */
+  grid-auto-rows: 90px;        /* height of each icon cell */
+  grid-auto-columns: 100px;    /* width of each column */
+
+  align-content: start;
+  justify-content: start;
+  gap: 10px;
+}
+.bar{
+  height: 60px;
+  width: 100%;
+  background-color: #0c0c0c;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+.win-btn-parent{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 70px;
+  border-right: 2px solid white;
+}
+.win-btn{
+  width: 46px;
+  height: 46px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.25s linear;
+  border-radius: 5px;
+}
+.win-btn-img{
+  width: 45px;
+  height: 45px;
+}
+.win-btn:hover{
+  background-color: rgba(240, 248, 255, 0.151);
+  cursor: pointer;
+} 
+.resize-handle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 14px;
+  height: 14px;
+  cursor: se-resize;
+}
