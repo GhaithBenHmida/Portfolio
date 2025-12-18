@@ -179,3 +179,37 @@
 .cont{
     width: 15px;
 }
+.win{
+    position: relative;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    transition: all 0.2s linear;
+    cursor: pointer;
+}
+.win:hover{
+    background-color: #383838;
+}
+.using{
+    background-color: #383838;
+}
+.win-img{
+    width: 34px;
+    height: 34px;
+    margin-left: 2px;
+}
+.win:hover .ac{
+    width: 30px;
+}
+.ac{
+    position: absolute;
+    background-color: lightblue;
+    width: 25px;
+    height: 3px;
+    border-radius: 2px;
+    bottom: 8px;
+}
