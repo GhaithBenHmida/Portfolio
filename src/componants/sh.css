@@ -144,7 +144,10 @@
     background-color: #191919;
     min-height: 280px;
     border-radius: 8px;
-    
+    transform-origin: top right;
+    transform: scale(1);
+    transition: all 0.2s linear;
+
 }
 .window-top{
     width: 100%;
@@ -191,6 +194,9 @@
     transition: all 0.2s linear;
     cursor: pointer;
 }
+.win:active .win-img{
+    scale: 0.92;
+}
 .win:hover{
     background-color: #383838;
 }
@@ -212,4 +218,10 @@
     height: 3px;
     border-radius: 2px;
     bottom: 8px;
+}
+.minimized{
+    transform-origin: bottom left;
+    transform: scale(0);
+
+    transition: all 0.2s linear;
 }

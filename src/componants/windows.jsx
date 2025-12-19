@@ -1,41 +1,47 @@
 import "./sh.css"
 import layer from "../assets/layers.png"
-import React, {useState, useRef} from "react"
+import React, {useState, useRef, useEffect} from "react"
 import exit from "../assets/exit.png"
 import min from "../assets/min.png"
 
-export default function Window({winname}){
+export default function Window({winname, ico, mini}){
     const [pos, setPos] = useState({t:110,l:150})
     const dragging = useRef(false);
     const offset = useRef({ x: 0, y: 0 })
     const [prevsize,setPrevSize] = useState({h:380, w:600})
     const [size,setSize] = useState({h:380, w:600})
     const [full, setFull] = useState(false)
+    const [minimized, setMinimized] = useState(false)
 
-function handleMouseDown(e) {
-  dragging.current = true;
+    useEffect(() => {
+        setMinimized(mini)
+    }, [mini]);
 
-  // If fullscreen, restore first and re-anchor under mouse
-  if (full) {
-    const restored = prevsize;
 
-    // place window so cursor stays on the bar
-    const newLeft = e.clientX - restored.w / 2;
-    const newTop = e.clientY - 15; // title bar height
+    function handleMouseDown(e) {
+        dragging.current = true;
 
-    setSize(restored);
-    setPos({ l: newLeft, t: newTop });
-    setFull(false);
+        // If fullscreen, restore first and re-anchor under mouse
+        if (full) {
+            const restored = prevsize;
 
-    offset.current = {
-      x: restored.w / 2,
-      y: 15
-    };
-  } else {
-    offset.current = {
-      x: e.clientX - pos.l,
-      y: e.clientY - pos.t
-    };
+            // place window so cursor stays on the bar
+            const newLeft = e.clientX - restored.w / 2;
+            const newTop = e.clientY - 15; // title bar height
+
+            setSize(restored);
+            setPos({ l: newLeft, t: newTop });
+            setFull(false);
+
+            offset.current = {
+            x: restored.w / 2,
+            y: 15
+        };
+    } else {
+        offset.current = {
+        x: e.clientX - pos.l,
+        y: e.clientY - pos.t
+        };
   }
 
   document.addEventListener("mousemove", handleMouseMove);
@@ -74,13 +80,16 @@ function handleMouseDown(e) {
     }
 
     return <>
-    <div className="window" style={{ top: pos.t, left: pos.l, width:size.w, height:size.h}} 
+    <div className={`window ${minimized ? "minimized" : ""}`} style={{ top: pos.t, left: pos.l, width:size.w, height:size.h}} 
       >
-        <div className="window-top" 
-        onMouseDown={handleMouseDown}>
-            <h6>{winname}</h6>
+        <div className="window-top" >
+            <div className="window-top-left" onMouseDown={handleMouseDown}>
+                <img src={ico} alt="" className="lil-ico" />
+                <h6>{winname}</h6>
+            </div>
+            
             <div className="controls">
-                <div className="cont-button">
+                <div className="cont-button" onClick={() => setMinimized(true)}>
                     <img src={min} alt="" className="cont" />
                 </div>
                 <div className="cont-button" onClick={() => {full_screen();}}>

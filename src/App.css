@@ -26,7 +26,7 @@
   justify-content: center;
   align-items: center;
   overflow: hidden  ;
-  z-index: -99; 
+  z-index: -99;
 }
 .bgimage{
   width: 100%;
@@ -98,4 +98,15 @@
   justify-content: start;
   align-items: center;
   gap: 5px;
+}
+.window-top-left{
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: start;
+  align-items: center;
+  gap: 2px;
+}
+.lil-ico{
+  height: 20px;
 }

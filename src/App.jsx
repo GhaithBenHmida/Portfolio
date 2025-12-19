@@ -10,6 +10,10 @@ import Win from './componants/win'
 function App() {
   const [opened, setOpened] = useState(false)
   const boxRef = useRef(null)
+  const [windows, setWindows] = useState([{id:"test", winname : "test windows", ico: folder,
+    minimized:false
+  }])
+  const [pins, setPins] = useState([{id:"test", ico: folder, active: true}])
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -27,6 +31,18 @@ function App() {
   }, [opened]);
 
 
+
+  function scalefromPin(id) {
+    setWindows(prev =>
+      prev.map(w =>
+        w.id === id
+          ? { ...w, minimized: !w.minimized}
+          : w
+      )
+    );
+  }
+
+
   return (
     <>
     <div id="container" className='no-select'>
@@ -37,7 +53,10 @@ function App() {
 
       
       <div className="suwi">
-        <Window winname={"project gallery"} />
+        {windows.map((w, index) => (
+          <Window winname={w.winname} ico={w.ico} key={index} mini={w.minimized} />
+        ))}
+        
         <ShortCut img={folder} name={"deisngs"} />
         <ShortCut img={folder} name={"projects"} />
         {opened && <Start  ref={boxRef} />}
@@ -48,11 +67,10 @@ function App() {
           <div className="win-btn" onClick={() => setOpened(prev => !prev)}><img src={win} alt="" className='win-btn-img' /></div>
         </div>
         <div className="wins-parent">
-          <Win icon={folder} />
-
-          <Win icon={folder} />
-
-          <Win icon={folder} active={true} using={true}/>
+          
+          {pins.map((p, index) => (
+            <Win key={index} active={p.active}  icon={p.ico} id={p.id} fun={scalefromPin} />
+          ))}
         </div>
       </div>
     </div>

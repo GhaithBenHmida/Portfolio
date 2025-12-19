@@ -1,8 +1,12 @@
 import "./sh.css"
+import React, {useState} from "react"
 
-export default function Win({icon, active, using,}){
+export default function Win({icon, active, id , fun}){
+    const [using, setUsing] = useState(true)
     return <>
-    <div className={`win ${using ? "using" : ""}`}>
+    <div className={`win ${using ? "using" : ""}`} onClick={() => {fun(id)
+        setUsing(prev => !prev)
+    }}>
         <img src={icon} alt="" className="win-img" />
         {active && <div className="ac" />}
         
