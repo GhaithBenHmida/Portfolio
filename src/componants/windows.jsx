@@ -4,10 +4,12 @@ import React, {useState, useRef, useEffect} from "react"
 import exit from "../assets/exit.png"
 import min from "../assets/min.png"
 
-export default function Window({winname, ico, mini}){
+export default function Window({id, winname, ico, mini, fun}){
     const [pos, setPos] = useState({t:110,l:150})
     const dragging = useRef(false);
     const offset = useRef({ x: 0, y: 0 })
+    const currentPos = useRef({t:110, l:150})
+    const animFrameRef = useRef(null)
     const [prevsize,setPrevSize] = useState({h:380, w:600})
     const [size,setSize] = useState({h:380, w:600})
     const [full, setFull] = useState(false)
@@ -16,6 +18,10 @@ export default function Window({winname, ico, mini}){
     useEffect(() => {
         setMinimized(mini)
     }, [mini]);
+
+    useEffect(() => {
+        currentPos.current = pos;
+    }, [pos]);
 
 
     function handleMouseDown(e) {
@@ -31,6 +37,7 @@ export default function Window({winname, ico, mini}){
 
             setSize(restored);
             setPos({ l: newLeft, t: newTop });
+            currentPos.current = { l: newLeft, t: newTop };
             setFull(false);
 
             offset.current = {
@@ -39,8 +46,8 @@ export default function Window({winname, ico, mini}){
         };
     } else {
         offset.current = {
-        x: e.clientX - pos.l,
-        y: e.clientY - pos.t
+        x: e.clientX - currentPos.current.l,
+        y: e.clientY - currentPos.current.t
         };
   }
 
@@ -52,14 +59,22 @@ export default function Window({winname, ico, mini}){
     function handleMouseMove(e) {
         if (!dragging.current) return;
 
-        setPos({
-            l: e.clientX - offset.current.x,
-            t: e.clientY - offset.current.y
+        if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+        
+        animFrameRef.current = requestAnimationFrame(() => {
+            const newPos = {
+                l: e.clientX - offset.current.x,
+                t: e.clientY - offset.current.y
+            };
+            currentPos.current = newPos;
+            setPos(newPos);
         });
-    }   
+    }
 
     function handleMouseUp() {
         dragging.current = false;
+
+        if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
 
         document.removeEventListener("mousemove", handleMouseMove);
         document.removeEventListener("mouseup", handleMouseUp);
@@ -89,7 +104,7 @@ export default function Window({winname, ico, mini}){
             </div>
             
             <div className="controls">
-                <div className="cont-button" onClick={() => setMinimized(true)}>
+                <div className="cont-button" onClick={() => fun(id)}>
                     <img src={min} alt="" className="cont" />
                 </div>
                 <div className="cont-button" onClick={() => {full_screen();}}>

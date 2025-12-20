@@ -13,7 +13,7 @@ function App() {
   const [windows, setWindows] = useState([{id:"test", winname : "test windows", ico: folder,
     minimized:false
   }])
-  const [pins, setPins] = useState([{id:"test", ico: folder, active: true}])
+  const [pins, setPins] = useState([{id:"test", ico: folder, active: true, using:true}])
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -31,12 +31,19 @@ function App() {
   }, [opened]);
 
 
-
   function scalefromPin(id) {
     setWindows(prev =>
       prev.map(w =>
         w.id === id
           ? { ...w, minimized: !w.minimized}
+          : w
+      )
+    );
+
+    setPins(prev =>
+      prev.map(w =>
+        w.id === id
+          ? { ...w, using: !w.using}
           : w
       )
     );
@@ -54,7 +61,7 @@ function App() {
       
       <div className="suwi">
         {windows.map((w, index) => (
-          <Window winname={w.winname} ico={w.ico} key={index} mini={w.minimized} />
+          <Window id={w.id} winname={w.winname} ico={w.ico} key={index} mini={w.minimized} fun={scalefromPin} />
         ))}
         
         <ShortCut img={folder} name={"deisngs"} />
@@ -69,7 +76,7 @@ function App() {
         <div className="wins-parent">
           
           {pins.map((p, index) => (
-            <Win key={index} active={p.active}  icon={p.ico} id={p.id} fun={scalefromPin} />
+            <Win key={index} active={p.active} using={p.using}  icon={p.ico} id={p.id} fun={scalefromPin} />
           ))}
         </div>
       </div>

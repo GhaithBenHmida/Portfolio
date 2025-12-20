@@ -146,7 +146,8 @@
     border-radius: 8px;
     transform-origin: top right;
     transform: scale(1);
-    transition: all 0.2s linear;
+    will-change: transform;
+    backface-visibility: hidden;
 
 }
 .window-top{
