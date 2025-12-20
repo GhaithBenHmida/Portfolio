@@ -2,18 +2,20 @@ import { useState, useRef, useEffect } from 'react'
 import bg from "./assets/bg.jpg"
 import ShortCut from './componants/ShortCut'
 import './App.css'
-import folder from "./assets/folder.png"
 import win from "./assets/win.png"
 import Start from './componants/StartBar'
 import Window from './componants/windows'
 import Win from './componants/win'
+import { icons } from './icons'
+
+
 function App() {
   const [opened, setOpened] = useState(false)
   const boxRef = useRef(null)
-  const [windows, setWindows] = useState([{id:"test", winname : "test windows", ico: folder,
-    minimized:false
+  const [windows, setWindows] = useState([{id:"test", winname : "test windows",
+    minimized:false, type:"browser"
   }])
-  const [pins, setPins] = useState([{id:"test", ico: folder, active: true, using:true}])
+  const [pins, setPins] = useState([{id:"test", ico: icons.folder, active: true, using:true}])
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -61,11 +63,13 @@ function App() {
       
       <div className="suwi">
         {windows.map((w, index) => (
-          <Window id={w.id} winname={w.winname} ico={w.ico} key={index} mini={w.minimized} fun={scalefromPin} />
+          <Window id={w.id} type={w.type} winname={w.winname}  key={index} mini={w.minimized} fun={scalefromPin} />
         ))}
         
-        <ShortCut img={folder} name={"deisngs"} />
-        <ShortCut img={folder} name={"projects"} />
+        <ShortCut img={icons.internt} name={"browser"} />
+        <ShortCut img={icons.gallery} name={"gallery"} />
+        <ShortCut img={icons.calc} name={"calculator"} />
+        <ShortCut img={icons.folder} name={"projects"} />
         {opened && <Start  ref={boxRef} />}
         
       </div>

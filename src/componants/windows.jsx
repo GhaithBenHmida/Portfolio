@@ -3,8 +3,15 @@ import layer from "../assets/layers.png"
 import React, {useState, useRef, useEffect} from "react"
 import exit from "../assets/exit.png"
 import min from "../assets/min.png"
+import Browser from "../subPages/Browser"
+import folder from "../assets/folder.png"
+import internt from "../assets/internet.png"
+import gallery from "../assets/gallery.png"
+import Gallery from "../subPages/Gallery"
+import Calculator from "../subPages/Calculator"
+import calc from "../assets/calculator.png"
 
-export default function Window({id, winname, ico, mini, fun}){
+export default function Window({id,type, winname, ico, mini, fun}){
     const [pos, setPos] = useState({t:110,l:150})
     const dragging = useRef(false);
     const offset = useRef({ x: 0, y: 0 })
@@ -93,13 +100,28 @@ export default function Window({id, winname, ico, mini, fun}){
         }
         setFull(prev => !prev)
     }
+    function getIcon(type) {
+    switch (type) {
+        case "browser":
+        return internt;
+        case "folder":
+        return folder;
+        case "gallery":
+        return gallery;
+        case "calculator":
+        return calc;
+        default:
+        return folder;
+    }
+    }
+
 
     return <>
     <div className={`window ${minimized ? "minimized" : ""}`} style={{ top: pos.t, left: pos.l, width:size.w, height:size.h}} 
       >
         <div className="window-top" >
             <div className="window-top-left" onMouseDown={handleMouseDown}>
-                <img src={ico} alt="" className="lil-ico" />
+                <img src={getIcon(type)} alt="" className="lil-ico" />
                 <h6>{winname}</h6>
             </div>
             
@@ -114,6 +136,12 @@ export default function Window({id, winname, ico, mini, fun}){
                     <img src={exit} alt="" className="cont" />
                 </div>
             </div>
+        </div>
+
+        <div className="window-centent">
+            {type === "browser" && <Browser url={"https://cody-ajst.vercel.app"} />}
+            {type === "gallery" && <Gallery />}
+            {type === "calculator" && <Calculator />}
         </div>
     </div>
     </>
