@@ -10,6 +10,12 @@ import { icons } from './icons'
 
 
 function App() {
+  const shortCuts = [
+    {img: icons.internt, name:"browser", props:{type:"browser", winname:"browser", id: "browser"+Date.now(), ico: icons.internt, active:true, using:true}},
+    {img: icons.gallery, name:"gallery", props:{type:"gallery", winname:"gallery", id: "gallery"+Date.now(), ico: icons.gallery,  active:true, using:true}},
+    {img: icons.calc, name:"calculator", props:{type:"calculator", winname:"calculator", id: "calculator"+Date.now(), ico: icons.calc,  active:true, using:true}},
+    {img: icons.folder, name:"projects" ,props:{type:"folder", winname:"projects", id: "folder"+Date.now(), ico: icons.folder,  active:true, using:true}},
+  ]
   const [opened, setOpened] = useState(false)
   const boxRef = useRef(null)
   const [windows, setWindows] = useState([{id:"test", winname : "test windows",
@@ -32,6 +38,11 @@ function App() {
     };
   }, [opened]);
 
+  function openWindow(props) {
+    setWindows(prev => [...prev, props])
+
+    setPins(prev => [...prev, {id:  props.id, ico:  props.ico, active:  props.active, using: props.using}])
+  }
 
   function scalefromPin(id) {
     setWindows(prev =>
@@ -65,11 +76,9 @@ function App() {
         {windows.map((w, index) => (
           <Window id={w.id} type={w.type} winname={w.winname}  key={index} mini={w.minimized} fun={scalefromPin} />
         ))}
-        
-        <ShortCut img={icons.internt} name={"browser"} />
-        <ShortCut img={icons.gallery} name={"gallery"} />
-        <ShortCut img={icons.calc} name={"calculator"} />
-        <ShortCut img={icons.folder} name={"projects"} />
+        {shortCuts.map((sc, index) => (
+          <ShortCut img={sc.img} name={sc.name} key={index} openfun={openWindow} props={sc.props} />
+        ))}
         {opened && <Start  ref={boxRef} />}
         
       </div>
