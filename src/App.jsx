@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useInsertionEffect } from 'react'
 import bg from "./assets/bg.jpg"
 import ShortCut from './componants/ShortCut'
 import './App.css'
@@ -18,10 +18,9 @@ function App() {
   ]
   const [opened, setOpened] = useState(false)
   const boxRef = useRef(null)
-  const [windows, setWindows] = useState([{id:"test", winname : "test windows",
-    minimized:false, type:"browser"
-  }])
-  const [pins, setPins] = useState([{id:"test", ico: icons.folder, active: true, using:true}])
+  const [windows, setWindows] = useState([])
+  const [pins, setPins] = useState([])
+
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -62,6 +61,12 @@ function App() {
     );
   }
 
+  function closewindow(id) {
+    setWindows(prev => prev.filter(w => w.id !== id))
+
+    setPins(prev => prev.filter(p => p.id !== id))
+  }
+  
 
   return (
     <>
@@ -74,7 +79,8 @@ function App() {
       
       <div className="suwi">
         {windows.map((w, index) => (
-          <Window id={w.id} type={w.type} winname={w.winname}  key={index} mini={w.minimized} fun={scalefromPin} />
+          <Window id={w.id} type={w.type} winname={w.winname}  key={index} mini={w.minimized} fun={scalefromPin} 
+          closeWin={closewindow} />
         ))}
         {shortCuts.map((sc, index) => (
           <ShortCut img={sc.img} name={sc.name} key={index} openfun={openWindow} props={sc.props} />

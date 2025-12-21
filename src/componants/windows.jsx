@@ -11,7 +11,7 @@ import Gallery from "../subPages/Gallery"
 import Calculator from "../subPages/Calculator"
 import calc from "../assets/calculator.png"
 
-export default function Window({id,type, winname, ico, mini, fun}){
+export default function Window({id,type, winname, mini, fun, closeWin}){
     const [pos, setPos] = useState({t:110,l:150})
     const dragging = useRef(false);
     const offset = useRef({ x: 0, y: 0 })
@@ -21,6 +21,8 @@ export default function Window({id,type, winname, ico, mini, fun}){
     const [size,setSize] = useState({h:380, w:600})
     const [full, setFull] = useState(false)
     const [minimized, setMinimized] = useState(false)
+
+    
 
     useEffect(() => {
         setMinimized(mini)
@@ -117,8 +119,7 @@ export default function Window({id,type, winname, ico, mini, fun}){
 
 
     return <>
-    <div className={`window ${minimized ? "minimized" : ""}`} style={{ top: pos.t, left: pos.l, width:size.w, height:size.h}} 
-      >
+    <div className={`window ${minimized ? "minimized" : ""}`} style={{ top: pos.t, left: pos.l, width:size.w, height:size.h}}  >
         <div className="window-top" >
             <div className="window-top-left" onMouseDown={handleMouseDown}>
                 <img src={getIcon(type)} alt="" className="lil-ico" />
@@ -132,7 +133,7 @@ export default function Window({id,type, winname, ico, mini, fun}){
                 <div className="cont-button" onClick={() => {full_screen();}}>
                     <img src={layer} alt="" className="cont" />
                 </div>
-                <div className="cont-button" id="ex">
+                <div className="cont-button" id="ex"  onClick={() => closeWin(id)}>
                     <img src={exit} alt="" className="cont" />
                 </div>
             </div>
